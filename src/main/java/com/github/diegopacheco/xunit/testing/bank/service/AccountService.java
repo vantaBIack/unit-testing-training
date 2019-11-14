@@ -5,8 +5,13 @@ import com.github.diegopacheco.xunit.testing.bank.model.Account;
 import com.github.diegopacheco.xunit.testing.bank.type.AccountType;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class AccountService{
+
+    public static List<Account> accounts = new ArrayList<>();
 
     public BigDecimal depositMoney(Account target, BigDecimal amount){
         validateInputData(target, amount);
@@ -42,5 +47,12 @@ public class AccountService{
         if (account == null){
             throw new BusinessException("Account must be provided");
         }
+    }
+
+    public Optional<BigDecimal> returnBalance(String accountId){
+        return accounts.stream()
+                .filter(account -> account.getId().equals(accountId))
+                .map(Account::getBalance)
+                .findFirst();
     }
 }
